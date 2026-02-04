@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Excel-Style Base-100 Clock</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
+    }
+
+    .frame {
+      position: relative;
+      width: 700px; /* adjust scale if needed */
+    }
+
+    .frame img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Clock overlay */
+    .clock {
+      position: absolute;
+      top: 85px;      /* tweak for perfect alignment */
+      right: 95px;    /* tweak for perfect alignment */
+      font-family: "Courier New", monospace;
+      font-size: 42px;
+      color: #ff2a2a;
+      letter-spacing: 4px;
+      text-shadow:
+        0 0 4px rgba(255, 0, 0, 0.6),
+        0 0 8px rgba(255, 0, 0, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="frame">
+    <!-- replace with your actual image filename if different -->
+    <img src="device.png" alt="Device">
+    <div id="clock" class="clock">00.00</div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+
+      const hours = now.getHours();
+
+      // milliseconds since top of the hour
+      const msIntoHour =
+        now.getMinutes() * 60000 +
+        now.getSeconds() * 1000 +
+        now.getMilliseconds();
+
+      // fraction of the hour elapsed
+      const hourFraction = msIntoHour / 3600000;
+
+      // base-100 minutes (smooth, continuous)
+      const decimalMinutes = hourFraction * 100;
+
+      const h = String(hours).padStart(2, '0');
+      const m = String(Math.floor(decimalMinutes)).padStart(2, '0');
+
+      document.getElementById("clock").textContent = `${h}.${m}`;
+    }
+
+    updateClock();
+    setInterval(updateClock, 16); // ~60fps smooth updates
+  </script>
+
+</body>
+</html>
